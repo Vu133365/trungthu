@@ -22,7 +22,7 @@ body {
   animation: twinkle 2s infinite ease-in-out;
 }
 @keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
+  0%,100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
 
@@ -142,6 +142,32 @@ body {
   50% { transform: rotate(15deg); }
   100% { transform: rotate(-15deg); }
 }
+
+/* 🌸 Chữ hiển thị giữa màn hình */
+.text-message {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: pink;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255,150,200,0.8), 0 0 40px rgba(255,200,250,0.6);
+  opacity: 0;
+  animation: fadeInOut 4s ease-in-out forwards;
+  white-space: pre-wrap;
+  width: 80%;
+  line-height: 1.5;
+  z-index: 9999;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+}
 </style>
 </head>
 <body>
@@ -161,6 +187,11 @@ body {
   <div class="string"></div>
   <img src="tho1.png" alt="Hình phải">
 </div>
+
+<!-- Nhạc nền -->
+<audio autoplay loop>
+  <source src="nhac.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 // --- Sao ---
@@ -188,11 +219,10 @@ for(let i=0;i<15;i++){
 }
 
 // --- Pháo hoa ---
-const particleCount = 50; // số hạt mỗi vụ nổ
+const particleCount = 50;
 
 function animateParticle(particle,x,y){
   const angle=Math.random()*2*Math.PI;
-  const speed=Math.random()*6+2;
   const distance=80+Math.random()*50;
   const dx=Math.cos(angle)*distance;
   const dy=Math.sin(angle)*distance;
@@ -212,7 +242,6 @@ function createFirework(x,y){
       const particle=document.createElement('div');
       particle.className='particle';
       particle.style.background=color;
-      particle.style.setProperty('--i',i);
       document.body.appendChild(particle);
       animateParticle(particle,x,y);
     }
@@ -222,7 +251,7 @@ function createFirework(x,y){
 function shootFirework(startX){
   const targetY=window.innerHeight*(0.3+Math.random()*0.3);
   const duration=1200+Math.random()*500;
-  const trailColor = "#ffffff"; // màu vàng cố định
+  const trailColor = "#ffffff";
 
   const trail = document.createElement('div');
   trail.classList.add('trail');
@@ -248,6 +277,34 @@ setInterval(()=>{
   shootFirework(100+Math.random()*150);
   shootFirework(window.innerWidth-250+Math.random()*150);
 },1000);
+
+// --- Hiện chữ giữa màn hình ---
+const texts = [
+  "Chúc em có một mùa Trung Thu thật vui vẻ và ấm áp nha 💞",
+  "Mong người anh đang nghĩ đến cũng có một ngày thật vui 💖",
+  "Chúc em có một đêm rằm trọn vẹn – trăng sáng, bánh ngon, lòng an yên 🌸",
+  " À mà nếu thấy trăng tròn, nhớ rằng có người đang ngắm cùng hướng với em 🥰"
+];
+
+let index = 0;
+
+function showText() {
+  const oldText = document.querySelector('.text-message');
+  if (oldText) oldText.remove();
+
+  const textDiv = document.createElement('div');
+  textDiv.className = 'text-message';
+  textDiv.textContent = texts[index];
+  document.body.appendChild(textDiv);
+
+  index++;
+if (index < texts.length) {
+  setTimeout(showText, 6000);
+}
+
+}
+
+showText();
 </script>
 </body>
 </html>
