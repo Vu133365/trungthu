@@ -22,7 +22,7 @@ body {
   animation: twinkle 2s infinite ease-in-out;
 }
 @keyframes twinkle {
-  0%,100% { opacity: 0.3; }
+  0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
 
@@ -109,6 +109,7 @@ body {
 /* Hình treo dây */
 .hanger {
   position: absolute;
+  top: 0px;
   z-index: 10;
 }
 .hanger .string {
@@ -126,11 +127,16 @@ body {
   transform-origin: top center;
   animation: swing 2s ease-in-out infinite alternate;
 }
-.hanger.left { left: 40px; top: 0; }
-.hanger.right { right: 20px; top: 20px; /* nhích lên */ }
-.hanger.right img { width: 140px; /* kích thước riêng */ }
 
-/* Swing animation */
+.hanger.right img {
+  width: 140px;  /* chỉnh kích thước riêng cho hình bên phải */
+  transform: translateY(100px);
+  margin-top: 0;
+  }
+
+
+.hanger.left { left: 40px; }
+.hanger.right { right: 40px; animation-delay: 1s; }
 @keyframes swing {
   0% { transform: rotate(-15deg); }
   50% { transform: rotate(15deg); }
@@ -155,11 +161,6 @@ body {
   <div class="string"></div>
   <img src="tho1.png" alt="Hình phải">
 </div>
-
-<!-- Nhạc nền -->
-<audio autoplay loop>
-  <source src="nhac.mp3" type="audio/mpeg">
-</audio>
 
 <script>
 // --- Sao ---
@@ -187,10 +188,11 @@ for(let i=0;i<15;i++){
 }
 
 // --- Pháo hoa ---
-const particleCount = 50;
+const particleCount = 50; // số hạt mỗi vụ nổ
 
 function animateParticle(particle,x,y){
   const angle=Math.random()*2*Math.PI;
+  const speed=Math.random()*6+2;
   const distance=80+Math.random()*50;
   const dx=Math.cos(angle)*distance;
   const dy=Math.sin(angle)*distance;
@@ -210,6 +212,7 @@ function createFirework(x,y){
       const particle=document.createElement('div');
       particle.className='particle';
       particle.style.background=color;
+      particle.style.setProperty('--i',i);
       document.body.appendChild(particle);
       animateParticle(particle,x,y);
     }
@@ -219,7 +222,7 @@ function createFirework(x,y){
 function shootFirework(startX){
   const targetY=window.innerHeight*(0.3+Math.random()*0.3);
   const duration=1200+Math.random()*500;
-  const trailColor = "#ffffff";
+  const trailColor = "#ffffff"; // màu vàng cố định
 
   const trail = document.createElement('div');
   trail.classList.add('trail');
@@ -248,4 +251,3 @@ setInterval(()=>{
 </script>
 </body>
 </html>
-
